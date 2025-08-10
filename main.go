@@ -1,13 +1,21 @@
 package main
 
 import (
-	routes "github.com/0xk4n3ki/golang-jwt/routes"
+	"log"
 	"os"
 
+	routes "github.com/0xk4n3ki/golang-jwt/routes"
+
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"
@@ -21,13 +29,13 @@ func main() {
 
 	router.GET("/api-1", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
-			"success":"access granted for api-1",
+			"success": "access granted for api-1",
 		})
 	})
 
 	router.GET("/api-2", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
-			"success":"access granted for api-2",
+			"success": "access granted for api-2",
 		})
 	})
 

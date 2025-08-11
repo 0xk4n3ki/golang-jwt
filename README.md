@@ -79,6 +79,7 @@ http://localhost:9000
 
 | Method| Endpoint| Description|
 | :------------ | :--------- | ------: |
+| GET | /healthz | Unprotected endpoint to check the service |
 | GET | /api-1	| Example protected endpoint |
 | GET | /api-2 | Example protected endpoint |
 

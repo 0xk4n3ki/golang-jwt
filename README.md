@@ -172,7 +172,7 @@ incomingRoutes.GET("/users", controller.GetUsers())
 
 1. api-1 without token (error)
 
-<img alt="api-1-error" src="/images/api-1-error.png>
+<img alt="api-1-error" src="/images/api-1-error.png">
 
 2. Signup
 

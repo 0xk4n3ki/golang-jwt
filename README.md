@@ -4,6 +4,15 @@ A backend authentication service built using Golang, Gin Gonic framework, MongoD
 
 Tested with Postman to demonstrate authentication, authorization, and role-based access control.
 
+## Credits
+
+This project is based on the tutorial series by Akhil Sharma: 
+
+[https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY](https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY)
+
+### Additional Work by Me:
+I extended the project by adding complete Dockerisation, including a production-ready Dockerfile for the Go service and a docker-compose.yml to run the application along with MongoDB and Mongo Express in isolated containers. This makes the project easy to deploy locally or in cloud environments with a single command.
+
 ## Features
 - User Signup & Login with hashed passwords (bcrypt).
 - JWT Access & Refresh Tokens for secure authentication.
@@ -11,11 +20,14 @@ Tested with Postman to demonstrate authentication, authorization, and role-based
 - Protected Routes using JWT middleware.
 - MongoDB as database for user storage.
 - Environment variables for secure configuration.
+- Dockerised setup for local or production deployment.
 
 ```bash
 .
 ├── main.go                  # Entry point
 ├── .env                     # Environment variables
+├── Dockerfile               # Go application Docker build file
+├── docker-compose.yml       # Orchestrates Go app, MongoDB, Mongo Express
 ├── controllers/             # Business logic
 ├── database/                # MongoDB connection
 ├── helpers/                 # Token generation & role helpers
@@ -191,8 +203,44 @@ incomingRoutes.GET("/users", controller.GetUsers())
 
 <img alt="api-1-success" src="/images/api-1-success.png">
 
-## Credits
 
-This project is based on the tutorial series by Akhil Sharma: 
+## Dockerisation Setup
 
-[https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY](https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY)
+### [MultiStage Dockerfile](/Dockerfile)
+
+Key Points:
+- Multi-stage build reduces image size.
+- Uses Alpine Linux for minimal final image size (~15MB).
+- Copies .env into the container (for dev/demo; in production use secrets).
+
+### [docker-compose.yml](/docker-compose.yml)
+
+Key Points:
+- app connects to mongodb using container hostname (mongodb) instead of localhost.
+- MongoDB data is persisted using a Docker volume (mongo_data).
+- Mongo Express is available at http://localhost:8081 for database inspection.
+
+### Command Reference
+
+Build and Run without Compose
+
+```bash
+# Build Image
+sudo docker build --tag jwt-auth-server:v2-latest .
+
+# Run Container
+sudo docker run -it --rm -v "$(pwd)/.env":/app/.env -p 9000:9000 jwt-auth-server:v2-latest
+```
+
+Using Docker Compose
+
+```bash
+# Build and Start
+sudo docker compose up --build
+
+# Stop Services
+sudo docker compose stop
+
+# Stop and Remove Containers, Networks, and Volumes
+sudo docker compose down
+```

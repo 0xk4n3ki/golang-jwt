@@ -1,0 +1,6 @@
+.dockerignore
+.git
+.env
+
+README.md
+./images

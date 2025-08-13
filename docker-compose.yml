@@ -11,7 +11,7 @@ services:
       - "27017:27017"
 
   app:
-    build: .
+    image: 0xk4n3ki/jwt-auth-server:latest
     restart: unless-stopped
     depends_on:
       - mongo

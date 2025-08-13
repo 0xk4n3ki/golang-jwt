@@ -43,5 +43,8 @@ func main() {
 		})
 	})
 
-	router.Run(":" + port)
+	err = router.Run(":" + port)
+	if err != nil {
+		log.Panic("Failed to run the router")
+	}
 }

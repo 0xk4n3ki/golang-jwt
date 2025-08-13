@@ -37,7 +37,7 @@ func VerifyPassword(userPassword, providedPassword string) (bool, string) {
 	msg := ""
 
 	if err != nil {
-		msg = fmt.Sprintf("email or password is incorrect")
+		msg = "email or password is incorrect"
 		check = false
 	}
 	return check, msg
@@ -66,8 +66,9 @@ func Signup() gin.HandlerFunc {
 			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occured while checking for the email"})
 		}
 
-		password := HashPassword(*user.Password)
-		user.Password = &password
+		if count > 0 {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "this email already exists"})
+		}
 
 		count, err = userCollection.CountDocuments(c, bson.M{"phone": user.Phone})
 		if err != nil {
@@ -76,8 +77,11 @@ func Signup() gin.HandlerFunc {
 		}
 
 		if count > 0 {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "this email or phone number already exists"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "this phone number already exists"})
 		}
+
+		password := HashPassword(*user.Password)
+		user.Password = &password
 
 		now := time.Now().UTC()
 		user.Created_at = now

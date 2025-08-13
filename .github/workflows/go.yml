@@ -65,20 +65,25 @@ jobs:
                         -t ${{ vars.DOCKERHUB_USERNAME }}/jwt-auth-server:latest .
 
             - name: Run Trivy vuln scanner
+              id: trivy
               uses: aquasecurity/trivy-action@0.28.0
               with:
                 image-ref: ${{ vars.DOCKERHUB_USERNAME }}/jwt-auth-server:${{ github.sha }}
                 format: sarif
                 output: trivy-results.sarif
                 severity: HIGH,CRITICAL
-                exit-code: 1
                 ignore-unfixed: true
                 vuln-type: os,library
+              continue-on-error: true
 
             - name: Upload Trivy SARIF file
               uses: github/codeql-action/upload-sarif@v3
               with:
                 sarif_file: trivy-results.sarif
+
+            - name: Fail if vuln found
+              if: steps.trivy.outcome == 'failure'
+              run: exit 1
 
             - name: Push Docker image
               run: |

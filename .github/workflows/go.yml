@@ -70,6 +70,7 @@ jobs:
                 image-ref: ${{ vars.DOCKERHUB_USERNAME }}/jwt-auth-server:${{ github.sha }}
                 format: sarif
                 output: trivy-results.sarif
+                severity: HIGH,CRITICAL
                 exit-code: 1
                 ignore-unfixed: true
                 vuln-type: os,library

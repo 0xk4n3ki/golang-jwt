@@ -75,9 +75,3 @@ Login
     - SARIF vulnerability scan results uploaded to GitHub Security tab
 - Build Cache:
     - Go module caching for faster CI runs
-
-    ## Acknowledgements
-
-The core application logic for JWT authentication was implemented by following the excellent tutorial series by Akhil Sharma: [https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY](https://youtube.com/playlist?list=PL5dTjWUk_cPY7Q2VTnMbbl8n-H4YDI5wF&si=bZZ_o5_rszljKIJY)
-
-Dockerization, CI/CD pipeline (GitHub Actions with security scanning), and other production readiness improvements were implemented independently.
